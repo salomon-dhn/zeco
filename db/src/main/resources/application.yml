@@ -7,7 +7,6 @@ spring:
     url: jdbc:mysql://remotemysql.com:3306/Rn6mm1eIfC?useSSL=false
     username: username
     password: password
-    driver-class-name: com.mysql.jdbc.Driver
   jpa:
     show-sql: true
     properties:

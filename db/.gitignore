@@ -4,12 +4,14 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /src/main/resources/secrets.yml
+!/src/main/resources/application.yml
 mvnw
 mvnw.cmd
 
 ### STS ###
 .apt_generated
-.classpath
+.classpath.java
+/.classpath
 .factorypath
 .project
 .settings

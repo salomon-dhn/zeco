@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @media screen,
+        print {
+            body {
+                background-color: rgb(248, 247, 247);
+            }
+            .droite {
+                width: 210mm;
+                height: 297mm;
+                background-color: white;
+                box-shadow: 0px 4px 4px white blur(0);
+                overflow-y: auto;
+                margin: auto;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                padding-top: 20px;
+            }
+            .entete-lettre {
+                display: flex;
+                justify-content: space-between;
+                padding-right: 10px;
+                padding-left: 10px;
+            }
+            .objet-lettre {
+                margin-top: 10%;
+                padding-left: 5%;
+            }
+            .corps-lettre {
+                text-align: justify;
+                padding-left: 10%;
+                padding-right: 10%;
+                padding-top: 10px;
+                margin-top: 5%;
+            }
+            .pool {
+                position: fixed;
+                top: 10px;
+                left: 10px;
+            }
+            .pool a {
+                text-decoration: none;
+                color: black;
+            }
+            .pool1 {
+                position: fixed;
+                top: 10px;
+                right: 10px;
+            }
+            .pool1 a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo">
+        <img src="/images/logo.png" alt="" width="65" height="66">
+    </div>
+    <hr>
+    <div class="entete-lettre">
+        <div class="nom-prenom-adresse">
+            Nom & Prenoms : Anonyme <br> Adresse : Anonyme <br> Tel: Anonyme
+        </div>
+
+
+        <div class="date-lettre">
+            <span id="date"></span>
+        </div>
+    </div>
+
+    <div class="objet-lettre">
+        <u>Objet: </u> Dépôt de plainte contre la corruption
+    </div>
+
+    <div class="corps-lettre">
+        Chère organisation, <br>
+        <br> Je soussigné(e) (nom et prénom), né(e) le (date de naissance) à (lieu de naissance) et exerçant la profession de (profession), vous informe porter plainte contre (nom et prénom / nom de l'entreprise / nom de l'organisation / ou X si personne
+        non connue), résidant à (nommer l'adresse de la personne ou de l'entreprise concernée) pour (qualification de l'infraction). <br>
+
+        <br> Je viens par la présente porter plainte contre le service <span class="nom-service"></span> de la société <span class="nom-entreprise"></span> pour un acte de corruption<br>
+
+        <br>En date du (date de l'événement), j'ai en effet été victime des faits suivants : (indiquer le plus précisément possible le détail des faits ainsi que le lieu où ils se sont produits, l'heure de l'événement et les personnes impliquées dans
+        l'infraction). Je joins à cette lettre les documents / photos / preuves qui pourraient se révéler utiles dans la suite de cette affaire (attention à joindre des copies et non des originaux).<br>
+
+        <br>Facultatif :
+        <br>Plusieurs personnes ont été témoins de l'infraction mentionnée ci-dessus. Il s'agit de Madame / Monsieur (noms et prénoms), résidant à (adresse des témoins) et joignables au numéro suivant (numéro de téléphone des témoins). <br>
+
+        <br>Dans ces conditions, je vous prie de bien vouloir enregistrer mon dépôt de plainte afin de donner une suite légale à cette affaire et de faire valoir mes droits. Je vous prie d'agréer, Madame, Monsieur le Procureur, l'expression de mes sentiments
+        les meilleurs. <br>
+
+        <br>Anonyme
+    </div>
+</body>
+
+</html>

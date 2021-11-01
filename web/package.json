@@ -1,0 +1,34 @@
+{
+  "name": "zeco-teams",
+  "version": "1.0.0",
+  "description": "Une application pour encourager la population à dénoncer des faits de corruptions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "corruption",
+    "lutte",
+    "dénoncer",
+    "signaler",
+    "signalement",
+    "authentification"
+  ],
+  "author": "ZECO TEAMS (KASSIN Edison, DAHOUN Salomon, Mame Faty)",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "fs": "0.0.1-security",
+    "html-pdf": "^3.0.1",
+    "http": "0.0.1-security",
+    "mkdirp": "^1.0.4",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.14",
+    "request": "^2.88.2",
+    "sha1": "^1.1.1",
+    "socket.io": "^4.3.1"
+  },
+  "devDependencies": {}
+}
