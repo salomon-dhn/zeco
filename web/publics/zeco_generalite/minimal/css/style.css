@@ -167,12 +167,13 @@ input {
 /* HEADER SECTION */
 
 #h {
-    background: url(../img/arriere1234.jpg) no-repeat center top;
-    padding-top: 200px;
+    /* background: url(../img/arriere1234.jpg) no-repeat center top; */
+    background: whitesmoke;
+    padding-top: 100px;
     text-align: center;
     background-attachment: relative;
     background-position: center center;
-    min-height: 700px;
+    min-height: 240px;
     width: 100%;
     -webkit-background-size: 100%;
     -moz-background-size: 100%;
@@ -196,8 +197,8 @@ input {
 
 @media (max-width: 768px) {
     #h {
-        padding-top: 120px;
-        min-height: 640px;
+        padding-top: 50px;
+        min-height: 240px;
     }
     #h h1 {
         font-size: 50px;

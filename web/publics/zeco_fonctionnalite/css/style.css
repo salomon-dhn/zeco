@@ -41,8 +41,8 @@ nav {
 #notification,
 #enquete,
 #enquete1 {
-    visibility: hidden;
-    display: none;
+    visibility: visible;
+    display: block;
 }
 
 .logo {
@@ -104,6 +104,16 @@ nav {
     display: flex;
     justify-content: space-between;
     height: 100%;
+    /* padding-bottom: 30%; */
+}
+
+@media screen and (max-width: 700px) {
+    .body-content {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+        padding-bottom: 30%;
+    }
 }
 
 .main-content {

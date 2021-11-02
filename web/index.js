@@ -1,37 +1,30 @@
 // instanciation des modules ajoutés avec node.js
+const session = require('express-session');
 var express = require('express');
 var upload = require('express-fileupload');
 var app = express(); //Instanciation du module express
 var sha1 = require('sha1');
-var http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
 const mkdirp = require('mkdirp');
 var mysql = require('mysql');
 var pdf = require('html-pdf');
 var fs = require('fs');
 var request = require('request');
+var http = require('http');
+
 var options = { format: 'A4' };
 
 const zeco = require('./publics/blockchain/cli_app/zecoLib.js');
 
 
 // Les informations pour la connexion à la base de données distante
-// var con = mysql.createConnection({
-//     host: "remotemysql.com",
-//     user: "Rn6mm1eIfC",
-//     password: "R4idlG4ec1",
-//     database: "Rn6mm1eIfC"
-// });
-
-//Les informations pour la connexion à la base de données local
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "zeco"
+    host: "remotemysql.com",
+    user: "Rn6mm1eIfC",
+    password: "R4idlG4ec1",
+    database: "Rn6mm1eIfC"
 });
+
+
 
 //L'erreur retournée quand il y a un problème avec la tentative de connexion à la base de données
 con.on('error', function(err) {
@@ -49,11 +42,33 @@ let today = new Date(timeElapsed);
 let todayDate = today.toLocaleDateString();
 
 
-
-
 //Les utilisations de node.js
+app.set('trust proxy', 1) // trust first proxy
 app.use(express.static("publics"));
 app.use(upload());
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session({
+    genid: function(req) {
+        var alpha = "abcdefghijklmnopqrstuvwxyz".split("");
+        let i = 0;
+        let chaine = "";
+
+        while (i < 11) {
+            var rnd_ltt = alpha[Math.floor(Math.random() * 26)];
+            chaine += rnd_ltt;
+            i++;
+        }
+        return chaine; // use UUIDs for session IDs
+    },
+    secret: "le code secret",
+    resave: false,
+    cookie: {
+        secure: false, // if true only transmit cookie over https
+        httpOnly: false, // if true prevent client side JS from reading the cookie 
+        maxAge: oneDay // session max age in miliseconds
+    },
+    saveUninitialized: true
+}))
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -102,6 +117,15 @@ app.get("/", (req, res) => {
     res.render("connexion");
 })
 
+app.get("/deconnexion", (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return console.log(err);
+        }
+        res.redirect("/")
+    });
+})
+
 //Requete de connexion
 app.post("/", (req, res) => {
     //On récupère les valeurs de pseudo et mot de passe de l'utilisateur
@@ -145,14 +169,6 @@ app.post("/inscription", (req, res) => {
         siren = req.body.siren_societe;
     }
 
-    // if (siren.length != 0) {
-    //     request('https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/?denomination=' + pseudo + '&siren=' + siren, function(error, response, body) {
-    //         res.json(body)
-    //         console.log(response);
-    //     });
-    // }
-
-
     //  on vérifie le mot de passe
     if (pwd === cpwd && pwd.length != 0) {
 
@@ -194,56 +210,73 @@ app.post("/inscription", (req, res) => {
 
 // Routes vers les fonctionnalités
 app.get("/home", (req, res) => {
-    res.render("home");
+    req.session.identifiant = identifiant;
+    req.session.plainte = plaintes;
+    res.render("home", { identifiant: req.session.identifiant, plainte: req.session.plainte });
 })
 
 // Routes vers les informations partagée
 app.get("/partage", (req, res) => {
-    res.render("info_partagee");
+    var sql_insert1 = "SELECT * FROM information, user WHERE user_id = id ORDER BY datePublication DESC";
+    con.query(sql_insert1, function(err, resultat) {
+        if (err) throw err;
+        information_recu = resultat;
+    });
+    req.session.identifiant = identifiant;
+    req.session.information = information_recu;
+    res.render("info_partagee", { identifiant: req.session.identifiant, information: req.session.information });
 })
 
 // Routes vers les renseignements sur la corruption
 app.get("/home/generalite", (req, res) => {
-    res.render("generalite");
+    req.session.identifiant = identifiant;
+    res.render("generalite", { identifiant: req.session.identifiant });
 })
 
 // Routes vers la construction de la plainte
 app.get("/home/denoncer", (req, res) => {
-    res.render("denoncer");
+    req.session.identifiant = identifiant;
+    req.session.plainte = plaintes;
+    res.render("denoncer", { identifiant: req.session.identifiant, plainte: req.session.plainte });
 })
 
 // Routes vers la construction de la plainte
 app.get("/home/denoncer/preview", (req, res) => {
-    res.render("preview");
+    res.render("preview", { plainte: plaintes });
 })
 app.post("/home/denoncer/preview", (req, res) => {
-    // res.render("lettre", function(err, html) {
-    //     pdf.create(html, options).toFile('./publics/save/' + identifiant.pseudo + todayDate + '.pdf', function(err, res) {
-    //         if (err) {
-    //             return console.log(err);
-    //         } else {
-    //             console.log(res); // { filename: '/app/businesscard.pdf' }
-    //             var dataFile = fs.readFileSync('./publics/save/preview.pdf');
-    //             //res.header('content-type', 'application/pdf');
-    //             // res.send(dataFile);
-    //             redirigerLettre = true;
-    //         }
-    //     });
-    // });
+    res.render("lettre", { plainte: plaintes }, function(err, html) {
+        pdf.create(html, options).toFile('./publics/save/' + identifiant.pseudo + todayDate + '.pdf', function(err, res) {
+            if (err) {
+                return console.log(err);
+            } else {
+                console.log(res);
+                var dataFile = fs.readFileSync('./publics/save/preview.pdf');
+                redirigerLettre = true;
+
+            }
+        });
+    });
+
+    res.redirect("/home?i=0")
 })
 
 
 app.get("/home/enquete", (req, res) => {
-    res.render("enquete1");
+    req.session.identifiant = identifiant;
+    res.render("enquete1", { identifiant: req.session.identifiant });
 })
 app.get("/home/enquete/confirmer", (req, res) => {
-    res.render("enquete2");
+    req.session.identifiant = identifiant;
+    res.render("enquete2", { identifiant: req.session.identifiant });
 })
 app.get("/home/info", (req, res) => {
-    res.render("info");
+    req.session.identifiant = identifiant;
+    res.render("info", { identifiant: req.session.identifiant });
 })
 app.get("/home/actualites", (req, res) => {
-    res.render("actualite");
+    req.session.identifiant = identifiant;
+    res.render("actualite", { identifiant: req.session.identifiant });
 })
 
 // formulaire de plainte
@@ -346,7 +379,7 @@ app.post("/home/denoncer", (req, res) => {
         if (err) throw err;
         //console.log('insertiion dans la table plainte réussi');
     });
-
+    plaintes.exist = true;
     res.redirect("/home/denoncer/preview");
 })
 
@@ -357,129 +390,104 @@ app.post('/home/info', (req, res) => {
     information.surveillance = req.body.surveillance;
 
     //console.log(information.surveillance);
-    if (information.surveillance) {
-        information.statut = "authentifique";
+    information.statut = "non authentifique";
 
-        //Coder la partie authentification de la blockchain
+    //On enregistre l'information dans la base de données
+    var chaine = "";
 
-        //Recupérer le hash du document
-    } else {
-        information.statut = "non authentifique";
+    if (req.files) {
 
-        //On enregistre l'information dans la base de données
-        var chaine = "";
+        var alpha = "abcdefghijklmnopqrstuvwxyz".split("");
+        let i = 0;
 
-        if (req.files) {
+        while (i < 5) {
+            var rnd_ltt = alpha[Math.floor(Math.random() * 26)];
+            chaine += rnd_ltt;
+            i++;
+        }
 
-            var alpha = "abcdefghijklmnopqrstuvwxyz".split("");
-            let i = 0;
+        chaine = chaine.toUpperCase();
+        information.code = chaine;
+        information.preuves = req.files.file;
 
-            while (i < 5) {
-                var rnd_ltt = alpha[Math.floor(Math.random() * 26)];
-                chaine += rnd_ltt;
-                i++;
-            }
+        mkdirp('publics/info_upload/' + chaine).then(made => {
 
-            chaine = chaine.toUpperCase();
-            information.code = chaine;
-            information.preuves = req.files.file;
+            if (req.files.file.length === undefined) {
+                //Insert a record in the "user" table:
+                var sql_insert = "INSERT INTO preuves (pieceAttache, codePlainte, provenance) VALUES ('publics/info_upload/" + chaine + "/" + req.files.file.name + "','" + chaine + "', 'Information')";
+                var sql_check = "SELECT pieceAttache, codePlainte FROM preuves WHERE pieceAttache='publics/info_upload/" + chaine + "/" + req.files.file.name + "' AND codePlainte='" + chaine + "'";
+                req.files.file.mv('publics/info_upload/' + chaine + '/' + req.files.file.name, (err) => {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        //console.log('insertion dans la preuve de l\'information la base de données')
+                        con.query(sql_check, function(err, result, fields) {
+                            if (err) throw err;
+                            if (result.length === 0) {
+                                con.query(sql_insert, function(err, resultat) {
+                                    if (err) throw err;
+                                });
+                                //console.log('Insertion dans la table preuves reussi et dans le dossier de code :' + chaine)
+                            } else {
+                                console.log('Echec d\'insertion dans la base de données');
+                            }
+                        });
 
-            mkdirp('publics/info_upload/' + chaine).then(made => {
+                        if (information.surveillance) {
+                            send('publics/info_upload/' + chaine + '/' + req.files.file.name);
+                            information.statut = "authentifique";
+                        }
+                    }
+                })
 
-                if (req.files.file.length === undefined) {
-                    //Insert a record in the "user" table:
-                    var sql_insert = "INSERT INTO preuves (pieceAttache, codePlainte, provenance) VALUES ('publics/info_upload/" + chaine + "/" + req.files.file.name + "','" + chaine + "', 'Information')";
-                    var sql_check = "SELECT pieceAttache, codePlainte FROM preuves WHERE pieceAttache='publics/info_upload/" + chaine + "/" + req.files.file.name + "' AND codePlainte='" + chaine + "'";
-                    req.files.file.mv('publics/info_upload/' + chaine + '/' + req.files.file.name, (err) => {
+            } else {
+                //console.log('insertion des preuves la base de données')
+                for (let index = 0; index < req.files.file.length; index++) {
+
+                    req.files.file[index].mv('publics/info_upload/' + chaine + '/' + req.files.file[index].name, (err) => {
                         if (err) {
                             res.send(err);
                         } else {
-                            //console.log('insertion dans la preuve de l\'information la base de données')
+                            //Insert a record in the "user" table:
+                            var sql_insert = "INSERT INTO preuves (pieceAttache, codePlainte, provenance) VALUES ('publics/info_upload/" + chaine + "/" + req.files.file[index].name + "','" + chaine + "', 'Information')";
+                            var sql_check = "SELECT pieceAttache, codePlainte FROM preuves WHERE pieceAttache='publics/info_upload/" + chaine + "/" + req.files.file[index].name + "' AND codePlainte='" + chaine + "'";
+
                             con.query(sql_check, function(err, result, fields) {
                                 if (err) throw err;
                                 if (result.length === 0) {
                                     con.query(sql_insert, function(err, resultat) {
                                         if (err) throw err;
                                     });
-                                    //console.log('Insertion dans la table preuves reussi et dans le dossier de code :' + chaine)
                                 } else {
-                                    console.log('Echec d\'insertion dans la base de données');
+                                    console.log('Echec d\insertion dans la base de données');
                                 }
                             });
+
+                            if (information.surveillance) {
+                                send('publics/info_upload/' + chaine + '/' + req.files.file[index].name);
+                                information.statut = "authentifique";
+                            }
                         }
                     })
-
-                } else {
-                    //console.log('insertion des preuves la base de données')
-                    for (let index = 0; index < req.files.file.length; index++) {
-
-                        req.files.file[index].mv('publics/info_upload/' + chaine + '/' + req.files.file[index].name, (err) => {
-                            if (err) {
-                                res.send(err);
-                            } else {
-                                //Insert a record in the "user" table:
-                                var sql_insert = "INSERT INTO preuves (pieceAttache, codePlainte, provenance) VALUES ('publics/info_upload/" + chaine + "/" + req.files.file[index].name + "','" + chaine + "', 'Information')";
-                                var sql_check = "SELECT pieceAttache, codePlainte FROM preuves WHERE pieceAttache='publics/info_upload/" + chaine + "/" + req.files.file[index].name + "' AND codePlainte='" + chaine + "'";
-
-                                con.query(sql_check, function(err, result, fields) {
-                                    if (err) throw err;
-                                    if (result.length === 0) {
-                                        con.query(sql_insert, function(err, resultat) {
-                                            if (err) throw err;
-                                        });
-                                    } else {
-                                        console.log('Echec d\insertion dans la base de données');
-                                    }
-                                });
-                            }
-                        })
-                    }
                 }
-                let timeElapsed = Date.now();
-                let today = new Date(timeElapsed);
-                console.log('Insertion de ' + req.files.file.length + ' dans la table preuves reussi et dans le dossier de code :' + chaine)
-                var sql_insert1 = "INSERT INTO information (description, codeInfo, statutInfo, user_id, datePublication) VALUES (\"" + information.description + "\",\"" + information.code + "\",\"" + information.statut + "\"," + identifiant.iduser + ", \"" + today.toLocaleDateString() + "\")";
-                con.query(sql_insert1, function(err, resultat) {
-                    if (err) throw err;
-                    console.log('insertion dans la table information réussi');
-                });
-                //console.log("information sera diffusé grâce au socket ");
-                res.redirect('/home');
-            })
-        } else {
-            console.log('Information sans fichier partagé')
-        }
+            }
+            let timeElapsed = Date.now();
+            let today = new Date(timeElapsed);
+            console.log('Insertion de ' + req.files.file.length + ' dans la table preuves reussi et dans le dossier de code :' + chaine)
+            var sql_insert1 = "INSERT INTO information (description, codeInfo, statutInfo, user_id, datePublication) VALUES (\"" + information.description + "\",\"" + information.code + "\",\"" + information.statut + "\"," + identifiant.iduser + ", \"" + today.toLocaleDateString() + "\")";
+            con.query(sql_insert1, function(err, resultat) {
+                if (err) throw err;
+                console.log('insertion dans la table information réussi');
+            });
+            //console.log("information sera diffusé grâce au socket ");
+            res.redirect('/home');
+        })
+    } else {
+        console.log('Information sans fichier partagé')
     }
-})
-
-
-
-// Emission et réception avec les sockets
-io.on('connection', function(socket) {
-
-    // Ici on emet les informations concernant l'utilisateur
-    socket.emit('identifiant', identifiant);
-
-    // Ici on emet la plainte de l'utilisateur
-    socket.emit('plainte', plaintes);
-
-    // socket.broadcast.emit('information', information);
-
-    // Sélection de toutes les informations enregistrer dans la base de données
-    var sql_insert1 = "SELECT * FROM information, user WHERE user_id = id ORDER BY datePublication DESC";
-    con.query(sql_insert1, function(err, resultat) {
-        if (err) throw err;
-        information_recu = resultat;
-    });
-
-    // Ici on emet La liste des information de la base de données
-    socket.emit('information_recu', information_recu);
-
-    //Emission de l'etat de la lettre redigée
-    socket.emit('redirect', redirigerLettre);
 
 })
 
-
-//port d'écoute du serveur
-server.listen(2911, () => { console.log('listening on *:2911'); });
+app.listen(process.env.PORT || 5000, () => {
+    console.log(`App Started on PORT ${process.env.PORT || 5000}`);
+});

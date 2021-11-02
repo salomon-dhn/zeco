@@ -58,6 +58,16 @@
                 text-decoration: none;
                 color: black;
             }
+            @media screen and (max-width: 700px) {
+                .col {
+                    width: 100%;
+                }
+            }
+            @media screen and (min-width: 701px) and (max-width: 1000px) {
+                .col {
+                    width: 50%;
+                }
+            }
         }
     </style>
 </head>
@@ -79,23 +89,25 @@
     </div>
 
     <div class="objet-lettre">
-        <u>Objet: </u> Dépôt de plainte contre la corruption
+        <u>Objet: </u> Dépôt de plainte contre la corruption <br>
+        <u>Code de la plainte:</u> <b><span class="code_plainte"><%= plainte.code %></span></b>
     </div>
 
     <div class="corps-lettre">
-        Chère organisation, <br>
-        <br> Je soussigné(e) (nom et prénom), né(e) le (date de naissance) à (lieu de naissance) et exerçant la profession de (profession), vous informe porter plainte contre (nom et prénom / nom de l'entreprise / nom de l'organisation / ou X si personne
-        non connue), résidant à (nommer l'adresse de la personne ou de l'entreprise concernée) pour (qualification de l'infraction). <br>
+        Monsieur/Madame, <br>
+        <br> Nous venons par la présente porter plainte contre <b><span class="acteurs"> <%= plainte.organisme %> </span></b> exerçant dans l'entreprise : <b><span class="entreprise"><%= plainte.entreprise %></span></b> situé à:
+        <b><span class="lieu"><%= plainte.lieu %></span></b> au <b><span class="pays"><%= plainte.pays %></span></b> <br> <br> et dans le service : <b><span class="service"><%= plainte.service %></span>.</b> <br>
 
-        <br> Je viens par la présente porter plainte contre le service <span class="nom-service"></span> de la société <span class="nom-entreprise"></span> pour un acte de corruption<br>
+        <hr> Cause : <b><span class="cause"><%= plainte.objet %></span>.</b>
+        <br> Faits racontés: <br>
+        <b><span class="fait"><%= plainte.description %></span>.</b> <br>
+        <br> Date des faits: <b><span class="fait_date"><%= plainte.date %></span>.</b> <br>
+        <br> Statuts: <b><span class="statut"><%= plainte.statut %></span>.</b> <br><br> Je joins à cette lettre les documents / photos / preuves qui pourraient se révéler utiles dans la suite de cette affaire (attention à joindre des copies et non des
+        originaux).
+        <br>
 
-        <br>En date du (date de l'événement), j'ai en effet été victime des faits suivants : (indiquer le plus précisément possible le détail des faits ainsi que le lieu où ils se sont produits, l'heure de l'événement et les personnes impliquées dans
-        l'infraction). Je joins à cette lettre les documents / photos / preuves qui pourraient se révéler utiles dans la suite de cette affaire (attention à joindre des copies et non des originaux).<br>
 
-        <br>Facultatif :
-        <br>Plusieurs personnes ont été témoins de l'infraction mentionnée ci-dessus. Il s'agit de Madame / Monsieur (noms et prénoms), résidant à (adresse des témoins) et joignables au numéro suivant (numéro de téléphone des témoins). <br>
-
-        <br>Dans ces conditions, je vous prie de bien vouloir enregistrer mon dépôt de plainte afin de donner une suite légale à cette affaire et de faire valoir mes droits. Je vous prie d'agréer, Madame, Monsieur le Procureur, l'expression de mes sentiments
+        <br>Dans ces conditions, je vous prie de bien vouloir enregistrer mon dépôt de plainte afin de donner une suite légale à cette affaire et de faire valoir mes droits. Je vous prie d'agréer, Madame, Monsieur de recevoir l'expression de mes salutations
         les meilleurs. <br>
 
         <br>Anonyme

@@ -20,15 +20,16 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
+    "express-session": "^1.17.2",
     "fs": "0.0.1-security",
     "html-pdf": "^3.0.1",
     "http": "0.0.1-security",
+    "jssha": "^3.2.0",
     "mkdirp": "^1.0.4",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.14",
-    "request": "^2.88.2",
     "sha1": "^1.1.1",
-    "socket.io": "^4.3.1"
-  },
-  "devDependencies": {}
+    "socket.io": "^4.3.1",
+    "web3": "^1.6.0"
+  }
 }

@@ -29,6 +29,14 @@ nav {
     padding: 5px 5%;
 }
 
+.cool {
+    background-color: #FFFFFF;
+}
+
+.cool a {
+    color: blue;
+}
+
 .nom-prenom {
     color: white;
     margin-left: 15px;
@@ -93,6 +101,7 @@ nav {
     display: flex;
     justify-content: space-between;
     height: 100%;
+    padding-bottom: 20px;
 }
 
 .main-content {
@@ -128,11 +137,15 @@ nav {
         overflow-y: auto;
         padding-bottom: 20%;
         width: 100%;
-        padding-top: 5%;
-        padding-right: 2%;
     }
     .droite {
         display: none;
         visibility: hidden;
+    }
+    .body-content {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+        padding-bottom: 30%;
     }
 }

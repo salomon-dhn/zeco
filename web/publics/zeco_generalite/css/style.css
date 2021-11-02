@@ -9,6 +9,11 @@ body {
     background-color: #FFFFFF;
 }
 
+.nom-prenom {
+    color: white;
+    margin-left: 15px;
+}
+
 .body {
     position: fixed;
     top: 0;

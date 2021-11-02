@@ -14,206 +14,160 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"> 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
-    -->
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
 
     <div class="body">
         <!-- La topbar de navigation -->
-        <nav>
-            <div class="nav-left">
-                <a href="/home"><img src="/images/logo.png" alt="ZECO APP" class="logo"></a>
-            </div>
-
-            <div class="nav-right">
-                <div class="nav-user">
-                    <a href="" class="btn dropdown-toggle" data-bs-toggle="dropdown"> <img src="/images/user-logo.jpg" alt=""><span class="nom-prenom"></span>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profil">Mon profil</a></li>
-                            <li><a class="dropdown-item" href="/notifications">Mes notifications</a></li>
-                            <hr>
-                            <li><a class="dropdown-item" href="/disconnect">Déconnexion</i></a></li>
-                        </ul>
-                </div>
-            </div>
-        </nav>
-
-
-        <!-- retour après uen plainte portée -->
-        <div class="alert alert-success alert-dismissible" id="notification">
-            <a href="/home" class="close" data-dismiss="alert" aria-label="close">&times;</a> Votre plainte a été reçue et sera traité par les autorités compétentes. <br> Vous pourrez suivre les avancés grâce au code: <strong><span class="codePlainte"></span></strong>
-        </div>
-
-        <!-- Page actuelle et chemin -->
-        <nav aria-label="breadcrumb" class="text-light cool">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" id="activer" aria-current="page">/Home</li>
-            </ol>
-        </nav>
-
-
-        <!-- Le corps de la page -->
-        <div class="body-content">
-
-            <div class="main-content">
-
-                <div class="card" style="width: 18rem;">
-                    <!-- Fait -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/crime_scene.png">
-
-                        <div class="card-body">
-                            <a href="/home/generalite" class="btn btn-primary">GENERALITES SUR LA CORRUPTION?</a>
+        <% if(identifiant.pseudo === undefined){ %>
+            <%- include('redirect'); %>
+                <% } else { %>
+                    <nav>
+                        <div class="nav-left">
+                            <a href="/home"><img src="/images/logo.png" alt="ZECO APP" class="logo"></a>
                         </div>
-                    </div>
-                </div>
 
-                <div class="card" style="width: 18rem;">
-                    <!-- Fait -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/corruption_denoncer.png">
-
-                        <div class="card-body">
-                            <a href="/home/denoncer" class="btn btn-primary">DENONCER UN ACTE DE CORRUPTION?</a>
+                        <div class="nav-right">
+                            <div class="nav-user">
+                                <a href="" class="btn" data-bs-toggle="dropdown"> <img src="/images/user-logo.jpg" alt=""><span class="nom-prenom"><%= identifiant.pseudo %></span>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Mon profil</a></li>
+                                        <li><a class="dropdown-item" href="#">Mes notifications</a></li>
+                                        <hr>
+                                        <li><a class="dropdown-item" href="/deconnexion">Déconnexion</i></a></li>
+                                    </ul>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </nav>
 
-                <div class="card" style="width: 18rem;">
-                    <!-- Fait -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/renseigner_image.png">
 
-                        <div class="card-body">
-                            <a href="/partage" class="btn btn-primary">PARCOURIR LES INFORMATIONS PARTAGEES</a>
+                    <!-- retour après uen plainte portée -->
+                    <% if(plainte.exist){ plainte.exist = false%>
+
+                        <div class="alert alert-success alert-dismissible" id="notification">
+                            <a href="/home" class="close" data-dismiss="alert" aria-label="close">&times;</a> Votre plainte a été reçue et sera traité par les autorités compétentes. <br> Vous pourrez suivre les avancés grâce au code: <strong><span class="codePlainte"><%=plainte.code%></span></strong>
                         </div>
-                    </div>
-                </div>
+                        <%}%>
 
-                <div class="card" style="width: 18rem;" id="enquete">
-                    <!-- Fait -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/partager_info.png">
+                            <!-- Page actuelle et chemin -->
+                            <nav aria-label="breadcrumb" class="text-light cool">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item active" id="activer" aria-current="page">/Home</li>
+                                </ol>
+                            </nav>
 
-                        <div class="card-body">
-                            <a href="/home/info" class="btn btn-primary">PARTAGER DES INFORMATIONS</a>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="card" style="width: 18rem;">
-                    <!-- Pas encore -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/authenticite_info.png">
+                            <!-- Le corps de la page -->
+                            <div class="body-content">
 
-                        <div class="card-body">
-                            <a href="#" class="btn btn-primary">VÉRIFIER L’AUTHENTICITÉ D’UNE INFORMATION</a>
-                        </div>
-                    </div>
-                </div>
+                                <div class="main-content">
 
-                <div class="card" style="width: 18rem;" id="enquete1">
-                    <!-- Fait -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/enquete.png">
+                                    <div class="card" style="width: 18rem;">
+                                        <!-- Fait -->
+                                        <div class="text-center">
+                                            <img class="card-img-top w-25" src="/images/crime_scene.png">
 
-                        <div class="card-body">
-                            <a href="/home/enquete" class="btn btn-primary">FAIRE UNE ENQUÊTE</a>
-                        </div>
-                    </div>
-                </div>
+                                            <div class="card-body">
+                                                <a href="/home/generalite" class="btn btn-primary">GENERALITES SUR LA CORRUPTION?</a>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                <div class="card" style="width: 18rem;">
-                    <!-- Fait mais à améliorer -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/actualite.png">
+                                    <div class="card" style="width: 18rem;">
+                                        <!-- Fait -->
+                                        <div class="text-center">
+                                            <img class="card-img-top w-25" src="/images/corruption_denoncer.png">
 
-                        <div class="card-body">
-                            <a href="/home/actualites" class="btn btn-primary">ACTUALITÉS SUR LA LUTTE CONTRE LA CORRUPTION</a>
-                        </div>
-                    </div>
-                </div>
+                                            <div class="card-body">
+                                                <a href="/home/denoncer" class="btn btn-primary">DENONCER UN ACTE DE CORRUPTION?</a>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                <div class="card" style="width: 18rem;">
-                    <!-- Pas encore  -->
-                    <div class="text-center">
-                        <img class="card-img-top w-25" src="/images/idee.png">
+                                    <div class="card" style="width: 18rem;">
+                                        <!-- Fait -->
+                                        <div class="text-center">
+                                            <img class="card-img-top w-25" src="/images/renseigner_image.png">
 
-                        <div class="card-body">
-                            <a href="#" class="btn btn-primary">IDÉE D’AMÉLIORATION</a>
-                        </div>
-                    </div>
-                </div>
+                                            <div class="card-body">
+                                                <a href="/partage" class="btn btn-primary">PARCOURIR LES INFORMATIONS PARTAGEES</a>
+                                            </div>
+                                        </div>
+                                    </div>
 
-            </div>
-        </div>
+                                    <% if(identifiant.etat === "Entreprise") {%>
+                                        <div class="card" style="width: 18rem;" id="enquete">
+                                            <!-- Fait -->
+                                            <div class="text-center">
+                                                <img class="card-img-top w-25" src="/images/partager_info.png">
 
+                                                <div class="card-body">
+                                                    <a href="/home/info" class="btn btn-primary">PARTAGER DES INFORMATIONS</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%}%>
+
+                                            <div class="card" style="width: 18rem;">
+                                                <!-- Pas encore -->
+                                                <div class="text-center">
+                                                    <img class="card-img-top w-25" src="/images/authenticite_info.png">
+
+                                                    <div class="card-body">
+                                                        <a href="#" class="btn btn-primary">VÉRIFIER L’AUTHENTICITÉ D’UNE INFORMATION</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <% if(identifiant.etat === "Entreprise") {%>
+                                                <div class="card" style="width: 18rem;" id="enquete1">
+                                                    <!-- Fait -->
+                                                    <div class="text-center">
+                                                        <img class="card-img-top w-25" src="/images/enquete.png">
+
+                                                        <div class="card-body">
+                                                            <a href="/home/enquete" class="btn btn-primary">FAIRE UNE ENQUÊTE</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <%}%>
+
+                                                    <div class="card" style="width: 18rem;">
+                                                        <!-- Fait mais à améliorer -->
+                                                        <div class="text-center">
+                                                            <img class="card-img-top w-25" src="/images/actualite.png">
+
+                                                            <div class="card-body">
+                                                                <a href="/home/actualites" class="btn btn-primary">ACTUALITÉS SUR LA LUTTE CONTRE LA CORRUPTION</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card" style="width: 18rem;">
+                                                        <!-- Pas encore  -->
+                                                        <div class="text-center">
+                                                            <img class="card-img-top w-25" src="/images/idee.png">
+
+                                                            <div class="card-body">
+                                                                <a href="/home/enquete/confirmer?idee" class="btn btn-primary">IDÉE D’AMÉLIORATION</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                </div>
+                            </div>
+                            <%}%>
     </div>
 
-    <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
     <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Tidio et socket -->
     <script src="//code.tidio.co/aypddbmehas5ortkvi1yl9vwdltmcpti.js" async></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        //  instanciation d'un socket pour cette page
-        var socket = io.connect();
-
-        //  on récupère l'identifiant de l'utilisateur par le socket
-        socket.once('identifiant', function(data) {
-            if (data.pseudo === undefined) {
-                window.location.href = "/";
-            } else {
-                document.querySelector('.nom-prenom').innerHTML = data.pseudo;
-
-                //Conditionner les fonctions à afficher
-                if (data.etat === "Entreprise") {
-                    document.querySelector('#enquete').style.visibility = "visible";
-                    document.querySelector('#enquete').style.display = "block";
-
-                    document.querySelector('#enquete1').style.visibility = "visible";
-                    document.querySelector('#enquete1').style.display = "block";
-                }
-            }
-        });
-    </script>
-
-    <script>
-        var chemin = window.location.href;
-        var url = new URL(chemin);
-        var search_params = new URLSearchParams(url.search);
-
-        //On vérifie si le parametre i existe
-        if (search_params.has('i')) {
-            socket.on('plainte', function(data) { // On recoit les données de la plaintes
-                document.querySelector('.codePlainte').innerHTML = data.code;
-                document.querySelector('#notification').style.visibility = "visible";
-                document.querySelector('#notification').style.display = "block";
-
-            });
-        } else if (search_params.has('save')) {
-            alert('sauvegarde effectuée');
-        } else if (search_params.has('echec')) {
-            if (search_params.get('echec') === 1) {
-                alert('Tentative de connexion échouée');
-            }
-        } else {
-
-        }
-    </script>
 </body>
 
 </html>
