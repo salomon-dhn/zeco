@@ -78,7 +78,7 @@ The ZECO web solution, innovative thanks to the insertion of blockchain and AI, 
 <br />
 <p align="center">
 <a align="center" href="https://github.com/salomon-dhn/zeco">
-  <img alt="Product Name Screen Shot" src="https://github.com/salomon-dhn/web-page/blob/main/assets/img/zeco.gif">
+  <img alt="Product Name Screen Shot" src="https://raw.githubusercontent.com/salomon-dhn/web-page/main/assets/img/zeco.gif">
 </a>
 </p>
 
@@ -121,7 +121,9 @@ It can be downloaded from the trufflesuite website: [Ganache download page](http
     truffle migrate --network development
     truffle migrate --network development --reset
     ```
-4. Run application
+4. Launch Ganache application
+
+5. Run application
     ```sh
     cd ../..
     node index.js
@@ -131,8 +133,6 @@ It can be downloaded from the trufflesuite website: [Ganache download page](http
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://reactnative.dev/docs/getting-started)_
 
@@ -169,7 +169,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-LinkedIN - [Salomon](https://www.linkedin.com/in/1sal) [Edison](https://sn.linkedin.com/in/edison-kassin) [Mame Faty](https://sn.linkedin.com/in/mame-faty-kane-621a48167)
+LinkedIN : 
+* [Salomon](https://www.linkedin.com/in/1sal)
+* [Edison](https://sn.linkedin.com/in/edison-kassin) 
+* [Mame Faty](https://sn.linkedin.com/in/mame-faty-kane-621a48167)
 
 Project Link: [https://github.com/salomon-dhn/zeco](https://github.com/salomon-dhn/zeco)
 
@@ -182,10 +185,10 @@ Project Link: [https://github.com/salomon-dhn/zeco](https://github.com/salomon-d
     * Saliou DIOP
 
 - Other :
-* [EJS](https://ejs.co/)
-* [ExpressJS](https://expressjs.com/fr/)
-* [Solidity](https://docs.soliditylang.org/en/v0.8.9/#)
-* [Truffle Suite](https://ionic.io/ionicons)
+    * [EJS](https://ejs.co/)
+    * [ExpressJS](https://expressjs.com/fr/)
+    * [Solidity](https://docs.soliditylang.org/en/v0.8.9/#)
+    * [Truffle Suite](https://ionic.io/ionicons)
 
 
 
