@@ -33,7 +33,7 @@ The ZECO web solution, innovative thanks to the insertion of blockchain and AI, 
     <a href="https://github.com/salomon-dhn/zeco"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/salomon-dhn/zeco">View Demo</a>
+    <a href="https://zeco-afriq.herokuapp.com/">View Demo</a>
     ·
     <a href="https://github.com/salomon-dhn/zeco/issues">Report Bug</a>
     ·
@@ -134,6 +134,8 @@ It can be downloaded from the trufflesuite website: [Ganache download page](http
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+You can try the application deployed on heroku : [https://zeco-afriq.herokuapp.com/](https://zeco-afriq.herokuapp.com/)
+
 _For more examples, please refer to the [Documentation](https://reactnative.dev/docs/getting-started)_
 
 
@@ -189,7 +191,7 @@ Project Link: [https://github.com/salomon-dhn/zeco](https://github.com/salomon-d
     * [ExpressJS](https://expressjs.com/fr/)
     * [Solidity](https://docs.soliditylang.org/en/v0.8.9/#)
     * [Truffle Suite](https://ionic.io/ionicons)
-
+    * [Heroku](https://heroku.com/)
 
 
 
